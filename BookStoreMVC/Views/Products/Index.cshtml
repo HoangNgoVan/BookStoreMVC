@@ -1,0 +1,52 @@
+﻿@model List<Product>
+@{
+}
+
+<h2 class="text-center mb-5"> Danh sách sản phẩm </h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Products" asp-action="Create"> Thêm sản phẩm mới </a>
+    </div>
+    <div class="col">
+
+    </div>
+</div>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">Tên Sách</th>
+            <th scope="col">Nhà xuất bản</th>
+            <th scope="col">Tác giả</th>
+            <th scope="col">Danh mục</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Hình ảnh</th>
+            <th scope="col">Ngày tạo</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Id</td>
+                <td>@product.BookName</td>
+                <td>@product.Brand</td>
+                <td>@product.Author</td>
+                <td>@product.Category</td>
+                <td>@(product.Price) VND</td>
+                <td><img src="~/products/@product.ImageFileName" width="100" /></td>
+                <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
+                <td>@product.Stock</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-controller="Products" asp-action="Edit" asp-route-id="@product.Id"> Edit </a>
+                    <a class="btn btn-primary btn-sm btn-danger" asp-controller="Products" asp-action="Delete" asp-route-id="@product.Id"> Delete </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

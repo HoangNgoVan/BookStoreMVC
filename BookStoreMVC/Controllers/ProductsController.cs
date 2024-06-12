@@ -77,6 +77,33 @@ namespace BookStoreMVC.Controllers
             return RedirectToAction("Index", "Products");
         }
 
+        public async Task<IActionResult> Edit(int id)
+        {
+            var product = await context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+
+            var productDto = new ProductDto()
+            {
+                BookName= product.BookName,
+                Brand = product.Brand,
+                Author = product.Author,
+                Category = product.Category,
+                Price = product.Price,
+                Description = product.Description,
+                Stock= product.Stock,
+            };
+
+            ViewData["ProductId"] = product.Id;
+            ViewData["ImageFileName"] = product.ImageFileName;
+            ViewData["CreatedAt"] = product.CreatedAt.ToString("dd/MM/yyyy");
+
+            return View(productDto);
+        }
+
      
     }
 }

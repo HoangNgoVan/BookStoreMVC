@@ -71,7 +71,7 @@ namespace BookStoreMVC.Controllers
                 IsStock = productDto.Stock == 0 ? false : true,
             };
 
-            context.Products.Add(product);
+            await context.Products.AddAsync(product);
             await context.SaveChangesAsync();
             TempData["success"] = "Tạo thành công sản phẩm";
             return RedirectToAction("Index", "Products");
@@ -104,6 +104,77 @@ namespace BookStoreMVC.Controllers
             return View(productDto);
         }
 
-     
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, ProductDto productDto)
+        {
+            var product = await context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewData["ProductId"] = product.Id;
+                ViewData["ImageFileName"] = product.ImageFileName;
+                ViewData["CreatedAt"] = product.CreatedAt.ToString("dd/MM/yyyy");
+
+                return View(productDto);
+            }
+
+            //Update the image file if we have a new image file
+            string newFileName = product.ImageFileName;
+            if (productDto.ImageFile != null)
+            {
+                newFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                newFileName += Path.GetExtension(productDto.ImageFile!.FileName);
+
+                string imageFullPath = environment.WebRootPath + "/products/" + newFileName;
+                using (var strean = System.IO.File.Create(imageFullPath))
+                {
+                    productDto.ImageFile.CopyTo(strean);
+                }
+
+                //delete the old image
+                string oldimageFullPath = environment.WebRootPath + "/products/" + product.ImageFileName;
+                System.IO.File.Delete(oldimageFullPath);
+
+            }
+
+            //update the product in the database
+            product.BookName = productDto.BookName;
+            product.Brand = productDto.Brand;
+            product.Author = productDto.Author;
+            product.Category = productDto.Category;
+            product.Price = productDto.Price;
+            product.Description = productDto.Description == null ? "" : productDto.Description;
+            product.Stock = productDto.Stock;
+            product.ImageFileName = newFileName;
+
+
+            await context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Products");
+        }
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var product = await context.Products.FindAsync(id);
+
+            if (product == null)
+            {
+                return RedirectToAction("Index", "Products");
+            }
+             
+            string imageFullPath = environment.WebRootPath + "/products/" + product.ImageFileName;
+            System.IO.File.Delete(imageFullPath);
+
+            context.Products.Remove(product);
+            await context.SaveChangesAsync(true);
+
+            return RedirectToAction("Index", "Products");
+
+        }
     }
 }

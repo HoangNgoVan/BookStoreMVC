@@ -16,7 +16,7 @@ namespace BookStoreMVC.Models
         [Required]
         public decimal Price { get; set; }
         [ValidateNever]
-        public string Description { get; set; } = " ";
+        public string Description { get; set; } = "";
         public IFormFile? ImageFile { get; set; }
         public int Stock { get; set; }
     }

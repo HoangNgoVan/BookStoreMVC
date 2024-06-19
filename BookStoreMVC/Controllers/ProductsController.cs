@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreMVC.Controllers
 {
+    [Route("/Admin/[controller]/{action=Index}/{id?}")]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -15,14 +16,122 @@ namespace BookStoreMVC.Controllers
             this.environment = environment;
         }
 
-        public IActionResult Index(int pageIndex)
+        public IActionResult Index(int pageIndex, string? search, string? column, string? orderBy)
         {
             IQueryable<Product> query = context.Products;
 
-            query = query.OrderByDescending(p => p.Id);
+            // search funtionality
+            if(search != null)
+            {
+                query = query.Where(p => p.BookName.Contains(search) || p.Author.Contains(search));
+            }
+
+            // sort functionality
+            string[] validColumns = { "Id", "BookName", "Brand", "Author", "Category", "Price", "CreatedAt", "Stock" };
+            string[] validOrderBy = { "desc", "asc" };
+
+            if (!validColumns.Contains(column))
+            {
+                column = "Id";
+            }
+
+            if (!validOrderBy.Contains(orderBy))
+            {
+                orderBy = "desc";
+            }
+
+            if(column == "BookName")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.BookName);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.BookName);
+                }
+            }
+            else if (column == "Brand")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Brand);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Brand);
+                }
+            }
+            else if (column == "Author")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Author);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Author);
+                }
+            }
+            else if (column == "Category")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Category);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Category);
+                }
+            }
+            else if (column == "Price")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Price);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Price);
+                }
+            }
+            else if (column == "CreatedAt")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.CreatedAt);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.CreatedAt);
+                }
+            }
+            else if (column == "Stock")
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Stock);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Stock);
+                }
+            }
+            else
+            {
+                if (orderBy == "asc")
+                {
+                    query = query.OrderBy(p => p.Id);
+                }
+                else
+                {
+                    query = query.OrderByDescending(p => p.Id);
+                }
+            }
+            //query = query.OrderByDescending(p => p.Id);
 
             //pagination functionality
-            if(pageIndex < 1)
+            if (pageIndex < 1)
             {
                 pageIndex = 1;
             }
@@ -36,6 +145,11 @@ namespace BookStoreMVC.Controllers
 
             ViewData["PageIndex"] = pageIndex;
             ViewData["TotalPages"] = totalPages;
+
+            ViewData["Search"] = search ?? "";
+
+            ViewData["Column"] = column;
+            ViewData["OrderBy"] = orderBy;
 
             return View(products);
         }

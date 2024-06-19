@@ -1,7 +1,26 @@
-﻿@model List<Product>
+﻿@using Microsoft.AspNetCore.Html;
+@model List<Product>
 @{
     int pageIndex = (int)ViewData["PageIndex"]!;
     int totalPages = (int)ViewData["TotalPages"]!;
+
+    string search = (string)ViewData["Search"]!;
+
+    string column = (string)ViewData["Column"]!;
+    string orderBy = (string)ViewData["OrderBy"]!;
+
+    HtmlString getArrow(string tableColumn)
+    {
+        if (tableColumn != column) return new HtmlString("");
+
+        if (orderBy == "desc")
+        {
+            return new HtmlString("<i class='bi bi-arrow-down'></i>");
+        }
+
+        return new HtmlString("<i class='bi bi-arrow-up'></i>");
+    }
+
 }
 
 <h2 class="text-center mb-5"> Danh sách sản phẩm </h2>
@@ -11,23 +30,39 @@
         <a class="btn btn-primary" asp-controller="Products" asp-action="Create"> Thêm sản phẩm mới </a>
     </div>
     <div class="col">
-
+        <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" name="search" value="@search" placeholder="Tìm kiếm bằng Tên sách hoặc Tác giả" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
     </div>
 </div>
+
+<script>
+    function sortTable(column) {
+        let = orderBy = "desc"
+        let currentColumn = "@column";
+        let currentOrder = "@orderBy";
+        if (column === currentColumn) {
+            if (currentOrder == "asc") orderBy = "desc";
+            else orderBy = "asc";
+        }
+        window.location.href = "?search=@(search)&column=" + column + "&orderBy=" + orderBy
+    }
+</script>
 
 <table class="table table-bordered table-hover">
     <thead>
         <tr>
-            <th scope="col">STT</th>
-            <th scope="col">Tên Sách</th>
-            <th scope="col">Nhà xuất bản</th>
-            <th scope="col">Tác giả</th>
-            <th scope="col">Danh mục</th>
-            <th scope="col">Giá</th>
-            <th scope="col">Hình ảnh</th>
-            <th scope="col">Ngày tạo</th>
-            <th scope="col">Số lượng</th>
-            <th scope="col">Action</th>
+            <th style="cursor: pointer;" onclick="sortTable('Id')">STT @getArrow("Id")</th>
+            <th style="cursor: pointer;" onclick="sortTable('BookName')">Tên Sách @getArrow("BookName")</th>
+            <th style="cursor: pointer;" onclick="sortTable('Brand')">Nhà xuất bản @getArrow("Brand")</th>
+            <th style="cursor: pointer;" onclick="sortTable('Author')">Tác giả @getArrow("Author")</th>
+            <th style="cursor: pointer;" onclick="sortTable('Category')">Danh mục @getArrow("Category")</th>
+            <th style="cursor: pointer;" onclick="sortTable('Price')">Giá @getArrow("Price")</th>
+            <th >Hình ảnh </th>
+            <th style="cursor: pointer;" onclick="sortTable('CreatedAt')">Ngày tạo @getArrow("CreatedAt")</th>
+            <th style="cursor: pointer;" onclick="sortTable('Stock')">Số lượng @getArrow("Stock")</th>
+            <th >Action</th>
         </tr>
     </thead>
 
@@ -59,7 +94,8 @@
         {
             string active = "";
             if (i == pageIndex) active = "active";
-            <li class="page-item @active"><a class="page-link" asp-route-pageIndex="@i" >@i</a></li>
+            <li class="page-item @active"><a class="page-link" asp-route-pageIndex="@i"
+               asp-route-search="@search" asp-route-column="@column" asp-route-orderBy="@orderBy" >@i</a></li>
         }
     </ul>
 </nav>

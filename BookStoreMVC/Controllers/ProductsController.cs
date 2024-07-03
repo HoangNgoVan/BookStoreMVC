@@ -212,22 +212,30 @@ namespace BookStoreMVC.Controllers
 
         public IActionResult Create()
         {
-            IEnumerable<SelectListItem> CategoryList = context.Categorys
+            try
+            {
+                IEnumerable<SelectListItem> CategoryList = context.Categorys
                 .Select(c => new SelectListItem
                 {
                     Text = c.CategoryName,
                     Value = c.CategoryId.ToString()
                 });
-            ViewBag.CategoryList = CategoryList;
+                ViewBag.CategoryList = CategoryList;
 
-            IEnumerable<SelectListItem> BrandList = context.Brands
-             .Select(b => new SelectListItem
-             {
-                 Text = b.BrandName,
-                 Value = b.BrandId.ToString()
-             });
-            ViewBag.BrandList = BrandList;
-            return View();
+                IEnumerable<SelectListItem> BrandList = context.Brands
+                 .Select(b => new SelectListItem
+                 {
+                     Text = b.BrandName,
+                     Value = b.BrandId.ToString()
+                 });
+                ViewBag.BrandList = BrandList;
+                return View();
+            }
+            catch (Exception ex) 
+            {
+                LogEvents.LogToFile("Create Product View", ex.ToString(), environment);
+                return RedirectToAction("Index", "Home");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Create(ProductDto productDto)

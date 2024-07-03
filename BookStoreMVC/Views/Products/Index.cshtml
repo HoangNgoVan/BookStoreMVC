@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Html;
-@model List<Product>
+@model List<ProductsVm>
 @{
     int pageIndex = (int)ViewData["PageIndex"]!;
     int totalPages = (int)ViewData["TotalPages"]!;
@@ -55,9 +55,11 @@
         <tr>
             <th style="cursor: pointer;" onclick="sortTable('Id')">STT @getArrow("Id")</th>
             <th style="cursor: pointer;" onclick="sortTable('BookName')">Tên Sách @getArrow("BookName")</th>
-            <th style="cursor: pointer;" onclick="sortTable('Brand')">Nhà xuất bản @getArrow("Brand")</th>
+            <th style="cursor: pointer;" onclick="sortTable('BrandNane')">Nhà xuất bản @getArrow("BrandNane")</th>
             <th style="cursor: pointer;" onclick="sortTable('Author')">Tác giả @getArrow("Author")</th>
-            <th style="cursor: pointer;" onclick="sortTable('Category')">Danh mục @getArrow("Category")</th>
+            <th style="cursor: pointer;" onclick="sortTable('PublishYear')">Năm xuất bản @getArrow("PublishYear")</th>
+            <th style="cursor: pointer;" onclick="sortTable('NumberOfPage')">Số trang @getArrow("NumberOfPage")</th>
+            <th style="cursor: pointer;" onclick="sortTable('CategoryName')">Danh mục @getArrow("CategoryName")</th>
             <th style="cursor: pointer;" onclick="sortTable('Price')">Giá @getArrow("Price")</th>
             <th >Hình ảnh </th>
             <th style="cursor: pointer;" onclick="sortTable('CreatedAt')">Ngày tạo @getArrow("CreatedAt")</th>
@@ -72,9 +74,11 @@
             <tr>
                 <td>@product.Id</td>
                 <td>@product.BookName</td>
-                <td>@product.Brand</td>
+                <td>@product.BrandName</td>
                 <td>@product.Author</td>
-                <td>@product.Category</td>
+                <td>@product.PublishYear</td>
+                <td>@product.NumberOfPage</td>
+                <td>@product.CategoryName</td>
                 <td>@(product.Price) VND</td>
                 <td><img src="~/products/@product.ImageFileName" width="100" /></td>
                 <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>

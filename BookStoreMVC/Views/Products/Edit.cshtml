@@ -27,10 +27,13 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Nhà xuất bản</label>
                 <div class="col-sm-8">
-                    <input class="form-control" asp-for="Brand" />
-                    <span asp-validation-for="Brand" class="text-danger"></span>
+                    <select class="form-select" asp-for="BrandId" asp-items="ViewBag.BrandList">
+                        <option disabled selected>---Chọn nhà xuất bản----</option>
+                    </select>
+                    <span asp-validation-for="BrandId" class="text-danger"></span>
                 </div>
             </div>
+
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Tác giả</label>
@@ -43,12 +46,26 @@
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label">Danh mục</label>
                 <div class="col-sm-8">
-                    <select class="form-select" asp-for="Category">
-                        <option value='Other'> Other </option>
-                        <option value='Giáo trình'> Giáo trình </option>
-                        <option value='Sách chuyên khảo'> Sách chuyên khảo </option>
-                        <option value='Kỷ yếu hội thảo'> Kỷ yếu hội thảo </option>
+                    <select class="form-select" asp-for="CategoryId" asp-items="ViewBag.CategoryList">
+                        <option disabled selected>---Chọn danh mục----</option>
                     </select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Số trang</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="NumberOfPage" />
+                    <span asp-validation-for="NumberOfPage" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-4 col-form-label">Năm xuất bản</label>
+                <div class="col-sm-8">
+                    <input class="form-control" asp-for="PublishYear" />
+                    <span asp-validation-for="PublishYear" class="text-danger"></span>
                 </div>
             </div>
 
@@ -110,4 +127,24 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#Description').summernote({
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+    </script>
+}
 

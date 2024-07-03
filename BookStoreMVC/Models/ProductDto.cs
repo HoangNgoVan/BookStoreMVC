@@ -7,17 +7,21 @@ namespace BookStoreMVC.Models
     {
         [Required, MaxLength(300)]
         public string BookName { get; set; } = "";
-        [Required, MaxLength(100)]
-        public string Brand { get; set; } = "";
+        [Required]
+        public int BrandId { get; set; }
         [Required, MaxLength(500)]
         public string Author { get; set; } = "";
         [Required]
-        public string Category { get; set; } = "";
+        public int CategoryId { get; set; }
         [Required]
         public decimal Price { get; set; }
         [ValidateNever]
         public string Description { get; set; } = "";
         public IFormFile? ImageFile { get; set; }
         public int Stock { get; set; }
+        [Required]
+        public int NumberOfPage { get; set; }
+        [Required]
+        public int PublishYear { get; set; }
     }
 }

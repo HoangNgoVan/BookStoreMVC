@@ -407,6 +407,7 @@ namespace BookStoreMVC.Controllers
                 product.NumberOfPage = productDto.NumberOfPage;
 
                 await context.SaveChangesAsync();
+                TempData["success"] = "Sửa thành công sản phẩm";
 
                 return RedirectToAction("Index", "Products");
             }
@@ -434,6 +435,7 @@ namespace BookStoreMVC.Controllers
 
                 context.Products.Remove(product);
                 await context.SaveChangesAsync(true);
+                TempData["success"] = "Xóa thành công sản phẩm";
 
                 return RedirectToAction("Index", "Products");
             }

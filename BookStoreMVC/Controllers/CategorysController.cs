@@ -7,6 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookStoreMVC.Controllers
 {
+    [Route("/Admin/[controller]/{action=Index}/{id?}")]
     public class CategorysController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -165,15 +166,15 @@ namespace BookStoreMVC.Controllers
             }
             catch (Exception ex)
             {
-                TempData["error"] = "Lỗi không tải được sản phẩm để sửa";
-                LogEvents.LogToFile("Edit Product View", ex.ToString(), environment);
+                TempData["error"] = "Lỗi không tải được danh mục để sửa";
+                LogEvents.LogToFile("Edit Category View", ex.ToString(), environment);
                 return RedirectToAction("Index", "Categorys");
 
             }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, Category categoryUdate)
+        public async Task<IActionResult> Edit(int id, Category categoryUpdate)
         {
             try
             {
@@ -188,11 +189,11 @@ namespace BookStoreMVC.Controllers
                 {
                     ViewData["CategoryId"] = category.CategoryId;
 
-                    return View(categoryUdate);
+                    return View(categoryUpdate);
                 }
 
                 //update the category in the database
-                category.CategoryName = categoryUdate.CategoryName == null ? "" : categoryUdate.CategoryName;
+                category.CategoryName = categoryUpdate.CategoryName == null ? "" : categoryUpdate.CategoryName;
 
                 await context.SaveChangesAsync();
                 TempData["success"] = "Sửa thành công danh mục";

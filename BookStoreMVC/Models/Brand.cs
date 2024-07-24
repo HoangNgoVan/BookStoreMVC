@@ -7,5 +7,7 @@ namespace BookStoreMVC.Models
         public int BrandId { get; set; }
         [MaxLength(300)]
         public string BrandName { get; set; } = "";
+        public DateTime CreatedAt { get; set; }
+
     }
 }

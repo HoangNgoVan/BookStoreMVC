@@ -15,7 +15,6 @@ namespace BookStoreMVC.Models
         public string ImageFileName { get; set; } = "";
         public DateTime CreatedAt { get; set; }
         public int Stock { get; set; }
-        public bool IsStock { get; set; }
         public int NumberOfPage { get; set; }
         public int PublishYear { get; set; }
 

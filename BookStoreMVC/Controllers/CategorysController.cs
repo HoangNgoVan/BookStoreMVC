@@ -1,5 +1,6 @@
 ﻿using BookStoreMVC.Models;
 using BookStoreMVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookStoreMVC.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("/Admin/[controller]/{action=Index}/{id?}")]
     public class CategorysController : Controller
     {
@@ -34,7 +36,7 @@ namespace BookStoreMVC.Controllers
                 }
 
                 // sort functionality
-                string[] validColumns = { "CategoryId", "CategoryName" };
+                string[] validColumns = { "CategoryId", "CategoryName", "CreatedAt" };
                 string[] validOrderBy = { "desc", "asc" };
 
                 if (!validColumns.Contains(column))
@@ -56,6 +58,17 @@ namespace BookStoreMVC.Controllers
                     else
                     {
                         query = query.OrderByDescending(c => c.CategoryName);
+                    }
+                }
+                else if (column == "CreatedAt")
+                {
+                    if (orderBy == "asc")
+                    {
+                        query = query.OrderBy(c => c.CreatedAt);
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(c => c.CreatedAt);
                     }
                 }
                 else
@@ -132,6 +145,7 @@ namespace BookStoreMVC.Controllers
                 Category category = new Category()
                 {
                     CategoryName = categoryView.CategoryName == null ? "" : categoryView.CategoryName,
+                    CreatedAt = DateTime.Now,
                 };
 
                 await context.Categorys.AddAsync(category);
@@ -161,6 +175,8 @@ namespace BookStoreMVC.Controllers
 
 
                 ViewData["CategoryId"] = category.CategoryId;
+                ViewData["CreatedAt"] = category.CreatedAt.ToString("dd/MM/yyyy");
+
 
                 return View(category);
             }
@@ -188,6 +204,7 @@ namespace BookStoreMVC.Controllers
                 if (!ModelState.IsValid)
                 {
                     ViewData["CategoryId"] = category.CategoryId;
+                    ViewData["CreatedAt"] = category.CreatedAt.ToString("dd/MM/yyyy");
 
                     return View(categoryUpdate);
                 }

@@ -1,5 +1,6 @@
 ﻿using BookStoreMVC.Models;
 using BookStoreMVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using System.Xml.XPath;
 
 namespace BookStoreMVC.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("/Admin/[controller]/{action=Index}/{id?}")]
     public class ProductsController : Controller
     {
@@ -186,7 +188,6 @@ namespace BookStoreMVC.Controllers
                     ImageFileName = x.p.ImageFileName,
                     CreatedAt = x.p.CreatedAt,
                     Stock = x.p.Stock,
-                    IsStock = x.p.IsStock,
                     NumberOfPage = x.p.NumberOfPage,
                     PublishYear = x.p.PublishYear,
                 }).ToListAsync();
@@ -281,7 +282,6 @@ namespace BookStoreMVC.Controllers
                     ImageFileName = newFileName,
                     CreatedAt = DateTime.Now,
                     Stock = productDto.Stock,
-                    IsStock = productDto.Stock == 0 ? false : true,
                     NumberOfPage = productDto.NumberOfPage,
                     PublishYear = productDto.PublishYear,
                 };

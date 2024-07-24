@@ -36,7 +36,7 @@
                         <p>
                             Tác giả: @product.Author
                         </p>
-                        <h4 class="mb-3">@(product.Price) VND</h4>
+                        <h4 class="mb-3">@String.Format("{0:0,0 VNĐ}", product.Price).Replace(",", ".")</h4>
                         <a class="btn btn-primary btn-sm mb-2" asp-controller="Store" asp-action="Details" asp-route-id="@product.Id" role="button">Chi tiết</a>
                         <button type="button" class="btn btn-warning btn-sm mb-2">
                             Thêm vào <i class="bi bi-cart4"></i>

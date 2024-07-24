@@ -1,11 +1,13 @@
 ﻿using BookStoreMVC.Models;
 using BookStoreMVC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace BookStoreMVC.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("/Admin/[controller]/{action=Index}/{id?}")]
     public class BrandsController : Controller
     {
@@ -33,7 +35,7 @@ namespace BookStoreMVC.Controllers
                 }
 
                 // sort functionality
-                string[] validColumns = { "BrandId", "BrandName" };
+                string[] validColumns = { "BrandId", "BrandName", "CreatedAt" };
                 string[] validOrderBy = { "desc", "asc" };
 
                 if (!validColumns.Contains(column))
@@ -55,6 +57,17 @@ namespace BookStoreMVC.Controllers
                     else
                     {
                         query = query.OrderByDescending(b => b.BrandName);
+                    }
+                }
+                else if (column == "CreatedAt")
+                {
+                    if (orderBy == "asc")
+                    {
+                        query = query.OrderBy(b => b.CreatedAt);
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(b => b.CreatedAt);
                     }
                 }
                 else
@@ -132,6 +145,7 @@ namespace BookStoreMVC.Controllers
                 Brand brand = new Brand()
                 {
                     BrandName = brandView.BrandName == null ? "" : brandView.BrandName,
+                    CreatedAt = DateTime.Now,
                 };
 
                 await context.Brands.AddAsync(brand);
@@ -161,6 +175,8 @@ namespace BookStoreMVC.Controllers
 
 
                 ViewData["BrandId"] = brand.BrandId;
+                ViewData["CreatedAt"] = brand.CreatedAt.ToString("dd/MM/yyyy");
+
 
                 return View(brand);
             }
@@ -188,6 +204,7 @@ namespace BookStoreMVC.Controllers
                 if (!ModelState.IsValid)
                 {
                     ViewData["BrandId"] = brand.BrandId;
+                    ViewData["CreatedAt"] = brand.CreatedAt.ToString("dd/MM/yyyy");
 
                     return View(brandUpdate);
                 }

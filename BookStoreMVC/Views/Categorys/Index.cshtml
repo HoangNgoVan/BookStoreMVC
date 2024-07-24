@@ -55,6 +55,7 @@
         <tr>
             <th style="cursor: pointer;" onclick="sortTable('CategoryId')">STT @getArrow("CategoryId")</th>
             <th style="cursor: pointer;" onclick="sortTable('CategoryName')">Tên danh mục @getArrow("CategoryName")</th>
+            <th style="cursor: pointer;" onclick="sortTable('CreatedAt')">Ngày tạo @getArrow("CreatedAt")</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -65,6 +66,7 @@
             <tr>
                 <td>@category.CategoryId</td>
                 <td>@category.CategoryName</td>
+                <td>@category.CreatedAt.ToString("dd/MM/yyyy")</td>
                 <td>
                     <a class="btn btn-primary btn-sm" asp-controller="Categorys" asp-action="Edit" asp-route-id="@category.CategoryId"> Edit </a>
                     <a class="btn btn-primary btn-sm btn-danger" asp-controller="Categorys" asp-action="Delete" asp-route-id="@category.CategoryId" onclick="return confirm('Bạn chắc chắn muốn xóa?')"> Delete </a>

@@ -81,7 +81,6 @@ namespace BookStoreMVC.Controllers
                 ImageFileName = x.p.ImageFileName,
                 CreatedAt = x.p.CreatedAt,
                 Stock = x.p.Stock,
-                IsStock = x.p.IsStock,
                 NumberOfPage = x.p.NumberOfPage,
                 PublishYear = x.p.PublishYear,
             }).ToListAsync();
@@ -139,7 +138,6 @@ namespace BookStoreMVC.Controllers
                             ImageFileName = p.ImageFileName,
                             CreatedAt = p.CreatedAt,
                             Stock = p.Stock,
-                            IsStock = p.IsStock,
                             NumberOfPage = p.NumberOfPage,
                             PublishYear = p.PublishYear,
                         }).FirstOrDefaultAsync();

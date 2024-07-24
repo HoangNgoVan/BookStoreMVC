@@ -79,7 +79,7 @@
                 <td>@product.PublishYear</td>
                 <td>@product.NumberOfPage</td>
                 <td>@product.CategoryName</td>
-                <td>@(product.Price) VND</td>
+                <td>@String.Format("{0:0,0 VNĐ}", product.Price).Replace(",",".")</td>
                 <td><img src="~/products/@product.ImageFileName" width="100" /></td>
                 <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
                 <td>@product.Stock</td>

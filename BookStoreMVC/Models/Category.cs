@@ -7,5 +7,7 @@ namespace BookStoreMVC.Models
         public int CategoryId { get; set; }
         [MaxLength(300)]
         public string CategoryName { get; set; } = "";
+        public DateTime CreatedAt { get; set; }
+
     }
 }
